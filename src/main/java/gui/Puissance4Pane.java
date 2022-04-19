@@ -112,7 +112,7 @@ public class Puissance4Pane extends BorderPane {
                 }
                 titleLabel.textFillProperty().setValue(Color.DARKVIOLET);
             } else {
-                game.nextPlayer();
+                game.nextTurn();
                 updateInformationLabel();
                 // TODO a déplacer dans un meilleur endroit
                 Player ia = game.getCurrentPlayer();
