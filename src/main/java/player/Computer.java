@@ -6,7 +6,7 @@ import ia.Ia;
 import ia.Niveau;
 
 public class Computer extends Player {
-    private Niveau level;
+    private final Niveau level;
 
     public Computer(String name, Piece piece, Niveau lvl) {
         super(name, piece);
@@ -15,20 +15,18 @@ public class Computer extends Player {
 
     /**
      * Retourne l'indice de la colonne où l'ia souhaite joué sur le plateau du Puissance 4
-     * @param game
-     * @return
+     *
+     * @param game le jeu
+     * @return l'indice de la colonne où l'ia souhaite placer sa piece
      */
     @Override
-    public int play(Puissance4 game) { // TODO ajouter ia
+    public int play(Puissance4 game) {
         switch(level) {
-            case MOYEN:
-                return Ia.playAlphaBeta(game);
-            case FORT:
-                return Ia.playTodo(game); // TODO le niveau 3 est encore a def
-            case FAIBLE: // le niveau par défaut est FAIBLE
+            case MOYEN,FORT:
+                return Ia.playAlphaBeta(game, level.getProfondeur(), Integer.MIN_VALUE, Integer.MAX_VALUE);
+            case FAIBLE:
             default:
-                return Ia.playMinMax(game);
-
+                return Ia.playMiniMax(game, level.getProfondeur(), true, this)[0];
         }
     }
 }

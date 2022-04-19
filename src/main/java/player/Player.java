@@ -4,8 +4,8 @@ import game.Piece;
 import game.Puissance4;
 
 public abstract class Player {
-    private String name;
-    private Piece piece;
+    private final String name;
+    private final Piece piece;
 
     protected Player(String name, Piece p){
         this.name = name;
