@@ -100,9 +100,11 @@ public class Puissance4 {
     }
 
     /**
-     * Place une pièce à la colonne indiqué en param si la position est valide le joueur ayant joué a gagné
+     * Place une pièce à la colonne indiqué en param si la position est valide.
+     * le joueur ayant joué a gagné
      *
      * @param col la colonne de la pièce à poser
+     * @return
      */
     public int placePiece(int col) {
         // Cherche l'indice de la ligne qui un emplacement vide (sans piece)
@@ -119,7 +121,16 @@ public class Puissance4 {
         } else if(getAvailablePlace().isEmpty()) {
             this.isGameOver = true; // S'il ne reste plus de place, le jeu se termine sur une egalité
         }
+        nextTurn(); // TODO a changer
         return row;
+    }
+
+    public void placePieceAndValid(int col){
+        int row =  placePiece(col);
+        if(row < 0) System.out.println("");
+        else {
+            nextTurn();
+        }
     }
 
     /**
@@ -366,7 +377,6 @@ public class Puissance4 {
      * @return la valeur de l'heuristique d'une colonne
      */
     private int calculateHeuristicVertical(List<Piece> list, boolean isP1) {
-        System.out.print("Vertical " + isP1);
         Piece pieceRef = (isP1) ? player1.getPiece() : player2.getPiece();
         int valeur = 0;         // la valeur de l'heuristique
         int compteur = 0;       // compte le nombre de pièce correspond à la pièce de reference

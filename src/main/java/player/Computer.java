@@ -7,10 +7,12 @@ import ia.Niveau;
 
 public class Computer extends Player {
     private final Niveau level;
+    private final Ia ai;
 
     public Computer(String name, Piece piece, Niveau lvl) {
         super(name, piece);
         this.level = lvl;
+        this.ai = new Ia(level);
     }
 
     /**
@@ -21,12 +23,16 @@ public class Computer extends Player {
      */
     @Override
     public int play(Puissance4 game) {
+        int[] result;
         switch(level) {
-            case MOYEN,FORT:
-                return Ia.playAlphaBeta(game, level.getProfondeur(), Integer.MIN_VALUE, Integer.MAX_VALUE);
+            case MOYEN, FORT:
+                result = ai.playAlphaBeta(game, 0, true, this, Integer.MIN_VALUE, Integer.MAX_VALUE);
+                break;
             case FAIBLE:
             default:
-                return Ia.playMiniMax(game, level.getProfondeur(), true, this)[0];
+                result = ai.playMiniMax(game, 0, true, this);
         }
+        System.out.println("IA joue à la colonne :" + result[0] + " (heuristique:" + result[1] + ")");
+        return result[0];
     }
 }

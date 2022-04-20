@@ -5,8 +5,8 @@ package ia;
  */
 public enum Niveau {
     FAIBLE(1),
-    MOYEN(3),
-    FORT(5);
+    MOYEN(5),
+    FORT(8);
 
     private final int profondeurDeRecherche;
 

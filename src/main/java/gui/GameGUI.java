@@ -20,7 +20,7 @@ public class GameGUI extends Application {
     public void start(Stage stage) throws Exception {
         // init le jeu
         Player p1 = new Human("Joker", Piece.ROUGE);
-        Player p2 = new Computer("AI", Piece.JAUNE, Niveau.FAIBLE);
+        Player p2 = new Computer("AI", Piece.JAUNE, Niveau.FORT);
         Puissance4 game = new Puissance4(p1, p2, true); // TODO ajouter dans menu
         // Affiche le jeu
         stage.setTitle("Puissance 4");
