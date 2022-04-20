@@ -100,37 +100,40 @@ public class Puissance4 {
     }
 
     /**
-     * Place une pièce à la colonne indiqué en param si la position est valide.
-     * le joueur ayant joué a gagné
+     * Cherche la prochaine indice de la ligne qui un emplacement vide (sans piece)
      *
      * @param col la colonne de la pièce à poser
-     * @return
+     * @return -1 si la colonne n'a plus de case vide, sinon retourne l'indice de la ligne disponible
      */
-    public int placePiece(int col) {
-        // Cherche l'indice de la ligne qui un emplacement vide (sans piece)
+    public int nextEmptyCaseRow(int col) {
         int row = NB_ROW - 1;
         for(; row >= 0; row--) {
             if(!pieceIsPresent(col, row)) break;
         }
         if(row < 0) return -1;
+        return row;
+    }
+
+    /**
+     * Place une pièce à la colonne indiqué en param s'il y a encore une case vide.
+     * Si la pièce est bien posé, on verifie si la partie a été remporté.
+     * Si oui, on met à jour l'attribut "winner" et on met fin au jeu.
+     * Sinon on passe au tour suivant.
+     *
+     * @param col la colonne de la pièce à poser
+     */
+    public void placePiece(int col) {
+        // Cherche l'indice de la ligne qui un emplacement vide (sans piece)
+        int row = nextEmptyCaseRow(col);
         boolean setIsValid = setPieceInPlateau(col, row);
-        if(!setIsValid) return -1;
+        if(!setIsValid) return;
+
         if(checkIfWinMove(col, row)) {
             this.winner = isP1Turn ? player1 : player2;
             this.isGameOver = true;
         } else if(getAvailablePlace().isEmpty()) {
             this.isGameOver = true; // S'il ne reste plus de place, le jeu se termine sur une egalité
-        }
-        nextTurn(); // TODO a changer
-        return row;
-    }
-
-    public void placePieceAndValid(int col){
-        int row =  placePiece(col);
-        if(row < 0) System.out.println("");
-        else {
-            nextTurn();
-        }
+        } else nextTurn();
     }
 
     /**

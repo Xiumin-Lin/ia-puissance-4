@@ -81,7 +81,6 @@ public class Ia {
 
 
     public int[] playAlphaBeta(Puissance4 game, int profondeur, boolean isMaximize, Player p, int alpha, int beta) {
-        System.out.println("PlayAlphaBeta, depth:" + profondeur);
         if(game.isOver()) {
             if(game.getWinner() == null) return new int[]{-1, 0}; // si égalité, renvoie 0
             else return new int[]{-1, game.calculateHeuristicValue(p)}; // sinon la valeur de l'heuristique du plateau
