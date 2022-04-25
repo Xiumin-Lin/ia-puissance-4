@@ -14,7 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 import player.Computer;
 import player.Player;
@@ -34,19 +33,22 @@ public class Puissance4Pane extends BorderPane {
     private static final int ECART = 10;            // L'écart entre chaque case
     private static final int RAYON = CASE_TAILLE_MAX / 2;   // Taille du rayon du cercle d'une case
     private static final int PADDING = CASE_TAILLE_MAX / 3; // Le padding du panneau
-    private Puissance4 initialGame;
+    private final Puissance4 initialGame;
     private Puissance4 game;
-    private int largeurTotal;
-    private int longueurTotal;
+    private final int largeurTotal;
+    private final int longueurTotal;
     private Pane piecePane;
-    private Pane plateauPane;
     private Circle lastPiece;
-    private Label titleLabel;
+    private final Label titleLabel;
     private Button validBtn;
-    private Button closebtn;
+    private ButtonBar buttonBar;
     private int selectionedCol;
 
-
+    /**
+     * Constructeur par défaut.
+     *
+     * @param game le jeu que le panneau va afficher
+     */
     public Puissance4Pane(Puissance4 game) {
         this.game = game;
         this.initialGame = new Puissance4(game); // la copie du jeu initial, utile pour un reset du jeu
@@ -59,19 +61,17 @@ public class Puissance4Pane extends BorderPane {
         this.setTop(titleLabel);
 
         // Création de l'aspect graphique du plateau de jeu au centre du pane
-        initPlateauPane();
-
+        this.initPlateauPane();
 
         // Init et création d'une box contenant une bar de boutons pour valider, reset et quitter le jeu
-        HBox buttonBox = initButtonBar();
-        this.setBottom(buttonBox);
+        this.setBottom(initButtonBar());
     }
 
     /**
      * Création de l'aspect graphique du plateau de jeu
      */
-    private void initPlateauPane(){
-        this.plateauPane = new Pane();
+    private void initPlateauPane() {
+        Pane plateauPane = new Pane();
         this.piecePane = new Pane();
         plateauPane.getChildren().add(piecePane); // piecePane doit etre ajouté en 1er dans plateauPane
         Shape grilleShape = createGridShape();
@@ -151,25 +151,19 @@ public class Puissance4Pane extends BorderPane {
 
     public HBox initButtonBar() {
         // Create Button Bar
-        int width = 150;
-        int height = 75;
-        ButtonBar buttonBar = new ButtonBar();
+        this.buttonBar = new ButtonBar();
         this.validBtn = new Button("Valider");
-        Button resetBtn = new Button("Reset");
-        this.closebtn = new Button("Quitter");
+        Button resetBtn = new Button("Recommencer");
         // Set pref size
-        validBtn.setPrefSize(width, height);
-        resetBtn.setPrefSize(width, height);
-        closebtn.setPrefSize(width, height);
+        this.setButtonPrefSize(validBtn);
+        this.setButtonPrefSize(resetBtn);
         // Set on action
         validBtn.setOnAction(e -> validerPlacePieceGui());
-        closebtn.setOnAction(e -> ((Stage) closebtn.getScene().getWindow()).close());
         resetBtn.setOnAction(e -> resetGameGui());
         // Adding the buttons to the button bar
         ButtonBar.setButtonData(validBtn, ButtonBar.ButtonData.APPLY);
         ButtonBar.setButtonData(resetBtn, ButtonBar.ButtonData.APPLY);
-        ButtonBar.setButtonData(closebtn, ButtonBar.ButtonData.CANCEL_CLOSE);
-        buttonBar.getButtons().addAll(closebtn, resetBtn, validBtn);
+        buttonBar.getButtons().addAll(resetBtn, validBtn);
         // Add buttons in a horizontal box
         HBox buttonBox = new HBox(5);
         buttonBox.getChildren().addAll(buttonBar);
@@ -200,29 +194,25 @@ public class Puissance4Pane extends BorderPane {
                 if(!game.isOutOfLimitCol(colSelectedByIA)) {
                     placePieceGUI(colSelectedByIA);
                     validerPlacePieceGui();
-                }
-                else System.out.println("Ia return a invalide number of col !"); // TODO a changer
+                } else System.out.println("Ia return a invalide number of col !"); // TODO a changer
             }
         }
     }
 
-    private void resetGameGui(){
+    private void resetGameGui() {
         this.game = new Puissance4(initialGame);
-        // Taille du plateau de jeu
-        int totalPadding = 2 * PADDING;
-        this.largeurTotal = (Puissance4.NB_ROW) * CASE_TAILLE_MAX + totalPadding + (Puissance4.NB_ROW - 1) * ECART;
-        this.longueurTotal = (Puissance4.NB_COL) * CASE_TAILLE_MAX + totalPadding + (Puissance4.NB_COL - 1) * ECART;
-        this.titleLabel = new Label();
         updateInformationLabel();
-        this.setTop(titleLabel);
-
         // Création de l'aspect graphique du plateau de jeu
-        initPlateauPane();
-
-        // Init et création d'une box contenant une bar de boutons pour valider, reset et quitter le jeu
-        HBox buttonBox = initButtonBar();
-        this.setBottom(buttonBox);
+        this.initPlateauPane();
     }
 
+    private void setButtonPrefSize(Button btn) {
+        btn.setPrefSize(150, 70);
+    }
 
+    public void addBackToMenuInButtonBar(Button backBtn) {
+        this.setButtonPrefSize(backBtn);
+        ButtonBar.setButtonData(backBtn, ButtonBar.ButtonData.LEFT);
+        this.buttonBar.getButtons().add(backBtn);
+    }
 }

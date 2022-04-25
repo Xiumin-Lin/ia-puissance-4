@@ -4,9 +4,9 @@ package ia;
  * Enumerate the different possible levels of an ia
  */
 public enum Niveau {
-    FAIBLE(1),
-    MOYEN(5),
-    FORT(8);
+    FAIBLE(3),
+    MOYEN(6),
+    FORT(9);
 
     private final int profondeurDeRecherche;
 

@@ -24,7 +24,6 @@ public class Ia {
      * @return la colonne que l'ia souhaite poser une pièce et sa valeur de l'heuristique
      */
     public int[] playMiniMax(Puissance4 game, int profondeur, boolean isMaximize, Player p) {
-        System.out.println("PlayMinMax, depth:" + profondeur);
         if(game.isOver()) {
             if(game.getWinner() == null) return new int[]{-1, 0}; // si égalité, renvoie 0
             else return new int[]{-1, game.calculateHeuristicValue(p)}; // sinon la valeur de l'heuristique du plateau
