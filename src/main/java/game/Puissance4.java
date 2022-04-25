@@ -257,13 +257,13 @@ public class Puissance4 {
     }
 
     /**
-     * Calcul la valeur de l'heuristique du plateau pour le joueur donnée en paramètre.
+     * Retourne l'evaluation de la valeur de l'heuristique du plateau pour le joueur donnée en paramètre.
      * Le retour > 0 si le joueur à l'avantage, < 0 s'il est en désavantage et 0 si il y a égalité.
      *
      * @param p le joueur concerné
      * @return la valeur de l'heuristique du plateau pour le joueur donnée en paramètre
      */
-    public int calculateHeuristicValue(Player p) {
+    public int evaluation(Player p) {
         int p1Score = 0;
         int p2Score = 0;
         // Si on a un vainqueur ou si il y a égalité
@@ -297,8 +297,8 @@ public class Puissance4 {
                     horizontal.add(plateau[col][row]);
                 }
             }
-            p1Score += calculateHeuristicHoriOuDiag(horizontal, true);
-            p2Score += calculateHeuristicHoriOuDiag(horizontal, false);
+            p1Score += calculateHeuristicHoriOrDiag(horizontal, true);
+            p2Score += calculateHeuristicHoriOrDiag(horizontal, false);
         }
 
         // Pour chaque diagonal top-left -> bottom-right : "\" qui contient au moins
@@ -315,8 +315,8 @@ public class Puissance4 {
                     diagTopLeft.add(Piece.UNAVAILABLE); // indique une place libre mais inaccesible pour l'instant
                 } else diagTopLeft.add(plateau[col][row]);
             }
-            p1Score += calculateHeuristicHoriOuDiag(diagTopLeft, true);
-            p2Score += calculateHeuristicHoriOuDiag(diagTopLeft, false);
+            p1Score += calculateHeuristicHoriOrDiag(diagTopLeft, true);
+            p2Score += calculateHeuristicHoriOrDiag(diagTopLeft, false);
         }
 
         // Pour chaque diagonal bottom-left -> top-right : "/" qui contient au moins
@@ -333,8 +333,8 @@ public class Puissance4 {
                     diagBotLeft.add(Piece.UNAVAILABLE);
                 } else diagBotLeft.add(plateau[col][row]);
             }
-            p1Score += calculateHeuristicHoriOuDiag(diagBotLeft, true);
-            p2Score += calculateHeuristicHoriOuDiag(diagBotLeft, false);
+            p1Score += calculateHeuristicHoriOrDiag(diagBotLeft, true);
+            p2Score += calculateHeuristicHoriOrDiag(diagBotLeft, false);
         }
 
         int result = p1Score - p2Score;
@@ -342,7 +342,7 @@ public class Puissance4 {
     }
 
     /**
-     * Calcule la valeur de l'heuristique en horizontal ou diagonal.
+     * Calcule la valeur de l'heuristique en horizontal ou en diagonal.
      * Dans cette disposition, elle ne peut y avoir qu'au max 2 emplacements vide
      * adjacent à une suite de pièce identique.
      *
@@ -350,7 +350,7 @@ public class Puissance4 {
      * @param isP1 le calcul de l'heuristique concerne le player 1 ?
      * @return la valeur de l'heuristique
      */
-    private int calculateHeuristicHoriOuDiag(List<Piece> list, boolean isP1) {
+    private int calculateHeuristicHoriOrDiag(List<Piece> list, boolean isP1) {
         Piece pieceRef = (isP1) ? player1.getPiece() : player2.getPiece();
         int valeur = 0;         // la valeur de l'heuristique
         int compteur = 0;       // compte le nombre de pièce correspond à la pièce de reference
@@ -359,13 +359,13 @@ public class Puissance4 {
             if(piece.getValue() == pieceRef.getValue()) compteur++;
             else if(piece == Piece.EMPTY) compteurEmpty++;
             else { // sinon c la pièce de l'adversaire
-                valeur += attribuerValeur(compteur, compteurEmpty);
+                valeur += calculateHeuristic(compteur, compteurEmpty);
                 compteur = 0;
                 compteurEmpty = 0;
             }
         }
         if(compteur != 0) {
-            valeur += attribuerValeur(compteur, compteurEmpty);
+            valeur += calculateHeuristic(compteur, compteurEmpty);
         }
         return valeur;
     }
@@ -390,12 +390,12 @@ public class Puissance4 {
                 compteurEmpty++;
                 break;  // pas besoin de continue comme on est en vertical
             } else {    // sinon c la pièce de l'adversaire
-                valeur += attribuerValeur(compteur, 0);
+                valeur += calculateHeuristic(compteur, 0);
                 compteur = 0;
             }
         }
         if(compteur != 0) {
-            valeur += attribuerValeur(compteur, compteurEmpty);
+            valeur += calculateHeuristic(compteur, compteurEmpty);
         }
         return valeur;
     }
@@ -408,7 +408,7 @@ public class Puissance4 {
      * @param compteurEmpty    le nombre de place disponible adjacent à cette suite (max = 2)
      * @return la valeur de l'heuristique d'une suite de piece.
      */
-    private int attribuerValeur(int compteurPieceRef, int compteurEmpty) {
+    private int calculateHeuristic(int compteurPieceRef, int compteurEmpty) {
         switch(compteurPieceRef) {
             case 2: { // Si on a une suite de 2 pièces identique et alignée
                 return switch(compteurEmpty) { // le nb de place disponible à côté de cette suite de 2 pièces

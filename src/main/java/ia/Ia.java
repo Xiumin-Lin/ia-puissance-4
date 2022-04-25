@@ -26,7 +26,7 @@ public class Ia {
     public int[] playMiniMax(Puissance4 game, int profondeur, boolean isMaximize, Player p) {
         if(game.isOver()) {
             if(game.getWinner() == null) return new int[]{-1, 0}; // si égalité, renvoie 0
-            else return new int[]{-1, game.calculateHeuristicValue(p)}; // sinon la valeur de l'heuristique du plateau
+            else return new int[]{-1, game.evaluation(p)}; // sinon la valeur de l'heuristique du plateau
         }
 
         // La liste des colonnes valide dont l'ia peut poser une pièce
@@ -57,7 +57,7 @@ public class Ia {
     public int minValue(Puissance4 game, int profondeur, int moveIndex, Player p) {
         int minValue;
         if(profondeur == this.profondeurMax) {
-            minValue = game.calculateHeuristicValue(p);
+            minValue = game.evaluation(p);
         } else {
             Puissance4 copie = new Puissance4(game); // on crée une copie du jeu
             copie.placePiece(moveIndex);
@@ -69,7 +69,7 @@ public class Ia {
     public int maxValue(Puissance4 game, int profondeur, int moveIndex, Player p) {
         int maxValue;
         if(profondeur == this.profondeurMax) {
-            maxValue = game.calculateHeuristicValue(p);
+            maxValue = game.evaluation(p);
         } else {
             Puissance4 copie = new Puissance4(game); // on crée une copie du jeu
             copie.placePiece(moveIndex);
@@ -82,7 +82,7 @@ public class Ia {
     public int[] playAlphaBeta(Puissance4 game, int profondeur, boolean isMaximize, Player p, int alpha, int beta) {
         if(game.isOver()) {
             if(game.getWinner() == null) return new int[]{-1, 0}; // si égalité, renvoie 0
-            else return new int[]{-1, game.calculateHeuristicValue(p)}; // sinon la valeur de l'heuristique du plateau
+            else return new int[]{-1, game.evaluation(p)}; // sinon la valeur de l'heuristique du plateau
         }
 
         // La liste des colonnes valide dont l'ia peut poser une pièce
@@ -95,7 +95,7 @@ public class Ia {
             int newValue = 0;
             // recup la valeur de l'heuristique
             if(profondeur == this.profondeurMax) {
-                newValue = game.calculateHeuristicValue(p);
+                newValue = game.evaluation(p);
             } else {
                 // si profondeur max non atteint, on crée une copie du jeu, place une pièce
                 // a la colonne "moveIndex" et applique alpha-beta sur ce nouveau plateau de jeu
