@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="495.0" y="1201.0">gui.GameGUI</node>
+    <node x="561.5" y="474.1327964989059">gui.Puissance4Pane</node>
+    <node x="199.0" y="1128.0">ia.Niveau</node>
+    <node x="185.0" y="1421.0">player.Computer</node>
+    <node x="614.0" y="1903.5">player.Human</node>
+    <node x="-267.5" y="1399.0">ia.Ia</node>
+    <node x="1001.5" y="414.5">appli.App</node>
+    <node x="217.5" y="1870.0">player.Player</node>
+    <node x="-693.5" y="1157.0">game.Puissance4</node>
+    <node x="217.5" y="2117.0">game.Piece</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="game.Puissance4" target="game.Piece" relationship="TO_MANY">
+      <point x="179.05620131291033" y="101.87472647702407" />
+      <point x="187.0" y="1604.5" />
+      <point x="187.0" y="2233.0" />
+      <point x="-79.5" y="0.0" />
+    </edge>
+    <edge source="player.Computer" target="ia.Ia" relationship="TO_ONE">
+      <point x="-112.0" y="0.0" />
+      <point x="184.5" y="0.0" />
+    </edge>
+    <edge source="player.Computer" target="ia.Ia" relationship="CREATE">
+      <point x="-112.0" y="15.0" />
+      <point x="184.5" y="15.0" />
+    </edge>
+    <edge source="ia.Ia" target="game.Puissance4" relationship="CREATE">
+      <point x="184.5" y="-89.5" />
+      <point x="452.0" y="1403.5" />
+      <point x="452.0" y="1381.5" />
+      <point x="179.05620131291033" y="-121.12527352297593" />
+    </edge>
+    <edge source="player.Human" target="player.Player" relationship="GENERALIZATION">
+      <point x="-83.0" y="0.0" />
+      <point x="79.5" y="0.0" />
+    </edge>
+    <edge source="gui.Puissance4Pane" target="game.Puissance4" relationship="CREATE">
+      <point x="-135.5" y="2.035010941199289E-4" />
+      <point x="452.0" y="799.133" />
+      <point x="452.0" y="1381.5" />
+      <point x="179.05620131291033" y="-121.12527352297593" />
+    </edge>
+    <edge source="player.Player" target="game.Piece" relationship="TO_ONE">
+      <point x="-79.5" y="0.0" />
+      <point x="187.0" y="1953.0" />
+      <point x="187.0" y="2233.0" />
+      <point x="-79.5" y="0.0" />
+    </edge>
+    <edge source="player.Computer" target="player.Player" relationship="GENERALIZATION">
+      <point x="0.0" y="72.0" />
+      <point x="0.0" y="-83.0" />
+    </edge>
+    <edge source="gui.GameGUI" target="player.Computer" relationship="CREATE">
+      <point x="-202.0" y="15.0" />
+      <point x="112.0" y="15.0" />
+    </edge>
+    <edge source="game.Puissance4" target="player.Player" relationship="TO_ONE">
+      <point x="0.0" y="345.62527352297593" />
+      <point x="-514.4442013129103" y="1938.0" />
+      <point x="-79.5" y="-15.0" />
+    </edge>
+    <edge source="gui.GameGUI" target="gui.Puissance4Pane" relationship="CREATE">
+      <point x="0.0" y="-292.0" />
+      <point x="0.0" y="325.0" />
+    </edge>
+    <edge source="gui.GameGUI" target="game.Puissance4" relationship="CREATE">
+      <point x="-202.0" y="0.0" />
+      <point x="452.0" y="1493.0" />
+      <point x="452.0" y="1381.5" />
+      <point x="179.05620131291033" y="-121.12527352297593" />
+    </edge>
+    <edge source="game.Puissance4" target="game.Piece" relationship="CREATE">
+      <point x="-15.0" y="345.62527352297593" />
+      <point x="-529.4442013129103" y="2248.0" />
+      <point x="-79.5" y="15.0" />
+    </edge>
+    <edge source="gui.Puissance4Pane" target="game.Puissance4" relationship="TO_ONE">
+      <point x="-135.5" y="-14.99979649890588" />
+      <point x="-514.4442013129103" y="784.133" />
+      <point x="0.0" y="-345.62527352297593" />
+    </edge>
+    <edge source="player.Computer" target="ia.Niveau" relationship="TO_ONE">
+      <point x="0.0" y="-72.0" />
+      <point x="0.0" y="105.0" />
+    </edge>
+    <edge source="gui.GameGUI" target="player.Human" relationship="CREATE">
+      <point x="0.0" y="292.0" />
+      <point x="0.0" y="-49.5" />
+    </edge>
+  </edges>
+  <settings layout="Orthogonal Groups" zoom="1.1414042519181586" showDependencies="true" x="203.03273522975928" y="806.7645689277899" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Constructors</Category>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

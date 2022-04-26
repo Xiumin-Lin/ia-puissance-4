@@ -3,6 +3,7 @@ package gui;
 import game.Piece;
 import game.Puissance4;
 import javafx.animation.TranslateTransition;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
@@ -37,9 +38,10 @@ public class Puissance4Pane extends BorderPane {
     private Puissance4 game;
     private final int largeurTotal;
     private final int longueurTotal;
+    private Pane plateauPane;
     private Pane piecePane;
     private Circle lastPiece;
-    private final Label titleLabel;
+    private Label titleLabel;
     private Button validBtn;
     private ButtonBar buttonBar;
     private int selectionedCol;
@@ -56,22 +58,30 @@ public class Puissance4Pane extends BorderPane {
         int totalPadding = 2 * PADDING;
         this.largeurTotal = (Puissance4.NB_ROW) * CASE_TAILLE_MAX + totalPadding + (Puissance4.NB_ROW - 1) * ECART;
         this.longueurTotal = (Puissance4.NB_COL) * CASE_TAILLE_MAX + totalPadding + (Puissance4.NB_COL - 1) * ECART;
-        this.titleLabel = new Label();
-        updateInformationLabel();
-        this.setTop(titleLabel);
-
+        // Init le label contenant les infos de la partie
+        this.initLabel();
         // Création de l'aspect graphique du plateau de jeu au centre du pane
         this.initPlateauPane();
-
         // Init et création d'une box contenant une bar de boutons pour valider, reset et quitter le jeu
         this.setBottom(initButtonBar());
+    }
+
+    private void initLabel() {
+        this.titleLabel = new Label();
+        this.titleLabel.setMaxWidth(largeurTotal);
+        this.titleLabel.setWrapText(true);
+        updateInformationLabel();
+        HBox titleBox = new HBox(titleLabel);
+        titleBox.setAlignment(Pos.CENTER);
+        titleBox.setPadding(new Insets(10)); // top, right, bot, left;
+        this.setTop(titleBox);
     }
 
     /**
      * Création de l'aspect graphique du plateau de jeu
      */
     private void initPlateauPane() {
-        Pane plateauPane = new Pane();
+        this.plateauPane = new Pane();
         this.piecePane = new Pane();
         plateauPane.getChildren().add(piecePane); // piecePane doit etre ajouté en 1er dans plateauPane
         Shape grilleShape = createGridShape();
@@ -145,7 +155,12 @@ public class Puissance4Pane extends BorderPane {
     }
 
     public void updateInformationLabel() {
-        titleLabel.setText("C'est au tour du joueur : " + game.getCurrentPlayer().getName());
+        Player currentP = game.getCurrentPlayer();
+        titleLabel.setText(" C'est au tour du joueur : " + currentP.getName() + " ");
+        if(currentP.getPiece() == Piece.ROUGE)
+            titleLabel.setStyle("-fx-background-color: lightsalmon  ;-fx-font-size: 20;");
+        else
+            titleLabel.setStyle("-fx-background-color: gold;-fx-font-size: 20;");
         titleLabel.textFillProperty().setValue(Color.BLACK);
     }
 
@@ -169,6 +184,8 @@ public class Puissance4Pane extends BorderPane {
         buttonBox.getChildren().addAll(buttonBar);
         buttonBox.setStyle("-fx-background-color: BEIGE");
         buttonBox.setAlignment(Pos.CENTER);
+        buttonBox.setPadding(new Insets(10, 0, 10,0));
+        buttonBox.setSpacing(10);
         return buttonBox;
     }
 
@@ -177,14 +194,14 @@ public class Puissance4Pane extends BorderPane {
         game.placePiece(selectionedCol);
         lastPiece = null;
         if(game.isOver()) {
-            System.out.println("GAME OVER");
+            System.out.println("< GAME OVER >");
+            this.plateauPane.setDisable(true);
             Player winner = game.getWinner();
             if(winner != null) {
-                titleLabel.setText("Partie remportée par " + winner.getName()); // TODO a mettre dans un popup
+                titleLabel.setText(" Partie remportée par " + winner + " "); // TODO a mettre dans un popup
             } else {
-                titleLabel.setText("Egalité !");
+                titleLabel.setText(" Egalité ! ");
             }
-            titleLabel.textFillProperty().setValue(Color.DARKVIOLET);
         } else {
             updateInformationLabel();
             Player ia = game.getCurrentPlayer();
@@ -194,7 +211,7 @@ public class Puissance4Pane extends BorderPane {
                 if(!game.isOutOfLimitCol(colSelectedByIA)) {
                     placePieceGUI(colSelectedByIA);
                     validerPlacePieceGui();
-                } else System.out.println("Ia return a invalide number of col !"); // TODO a changer
+                } else System.out.println("Ia return a invalide number of col !");
             }
         }
     }

@@ -15,6 +15,11 @@ public class Computer extends Player {
         this.ai = new Ia(level);
     }
 
+    @Override
+    public String toString() {
+        return "[Ordi] " + getName() + " (Piece " + getPiece() + ')';
+    }
+
     /**
      * Retourne l'indice de la colonne où l'ia souhaite joué sur le plateau du Puissance 4
      *

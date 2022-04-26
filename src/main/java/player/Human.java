@@ -12,4 +12,9 @@ public class Human extends Player{
     public int play(Puissance4 game) {
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return "[Humain] " + getName() + " (Piece " + getPiece() + ')';
+    }
 }
