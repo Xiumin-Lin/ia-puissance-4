@@ -64,7 +64,7 @@ public class GameGUI extends Application {
                 + "\nC'est le joueur 1 (Piece ROUGE) qui va jouer en premier.";
         Label descriptionLabel = new Label(desciption);
         descriptionLabel.setStyle("-fx-font-size: 13;");
-        descriptionLabel.setMaxWidth(500);
+        descriptionLabel.setMaxWidth(550);
         descriptionLabel.setWrapText(true);
         // Put in a VBox
         VBox titleVbox = new VBox(title, descriptionLabel);

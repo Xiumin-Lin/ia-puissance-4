@@ -15,15 +15,16 @@ public class Ia {
     }
 
     /**
+     * v
      * Utilise l'algo minimax pour déterminer la colonne que l'ia souhaite pour une partie de Puissance 4.
      *
      * @param game       une partie de Puissance 4
-     * @param profondeur la profondeur actuel de l'algo minimax
-     * @param isMaximize est ce que le joueur veut le max ou le min de la valeur de l'heuristique
-     * @param p          le joeur qui veut utiliser l'algo minimax (normalement un objet de class Computer)
+     * @param profondeur la profondeur actuelle de l'algo minimax
+     * @param isMax      est ce que l'agent est Max (est ce qu'on veut la valeur maximal de l'heuristique)
+     * @param p          le joueur qui veut utiliser l'algo minimax (normalement un objet de class Computer)
      * @return la colonne que l'ia souhaite poser une pièce et sa valeur de l'heuristique
      */
-    public int[] playMiniMax(Puissance4 game, int profondeur, boolean isMaximize, Player p) {
+    public int[] playMiniMax(Puissance4 game, int profondeur, boolean isMax, Player p) {
         if(game.isOver()) {
             if(game.getWinner() == null) return new int[]{-1, 0}; // si égalité, renvoie 0
             else return new int[]{-1, game.evaluation(p)}; // sinon la valeur de l'heuristique du plateau
@@ -33,11 +34,11 @@ public class Ia {
         List<Integer> colonnesValide = game.getAvailablePlace();
         // On attribut un colonne au hasard au cas où l'algo n'arrive pas à choisir
         int col = colonnesValide.get(RAND.nextInt(colonnesValide.size()));
-        int value = isMaximize ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        int value = isMax ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         // Pour chaque coup possible
         for(int moveIndex : colonnesValide) {
             int newValue = 0;
-            if(isMaximize) {
+            if(isMax) {
                 newValue = minValue(game, profondeur, moveIndex, p);
                 if(newValue > value) {
                     value = newValue;
@@ -79,7 +80,7 @@ public class Ia {
     }
 
 
-    public int[] playAlphaBeta(Puissance4 game, int profondeur, boolean isMaximize, Player p, int alpha, int beta) {
+    public int[] playAlphaBeta(Puissance4 game, int profondeur, boolean isMax, Player p, int alpha, int beta) {
         if(game.isOver()) {
             if(game.getWinner() == null) return new int[]{-1, 0}; // si égalité, renvoie 0
             else return new int[]{-1, game.evaluation(p)}; // sinon la valeur de l'heuristique du plateau
@@ -89,7 +90,7 @@ public class Ia {
         List<Integer> colonnesValide = game.getAvailablePlace();
         // On attribut un colonne au hasard au cas où l'algo n'arrive pas à choisir
         int col = colonnesValide.get(RAND.nextInt(colonnesValide.size()));
-        int value = isMaximize ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        int value = isMax ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         // Pour chaque coup possible
         for(int moveIndex : colonnesValide) {
             int newValue = 0;
@@ -101,9 +102,9 @@ public class Ia {
                 // a la colonne "moveIndex" et applique alpha-beta sur ce nouveau plateau de jeu
                 Puissance4 copie = new Puissance4(game);
                 copie.placePiece(moveIndex);
-                newValue = playAlphaBeta(copie, profondeur + 1, !isMaximize, p, alpha, beta)[1];
+                newValue = playAlphaBeta(copie, profondeur + 1, !isMax, p, alpha, beta)[1];
             }
-            if(isMaximize) {
+            if(isMax) {
                 if(newValue > value) {
                     value = newValue;
                     col = moveIndex;
