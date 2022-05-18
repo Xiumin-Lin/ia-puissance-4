@@ -16,6 +16,11 @@ import player.Computer;
 import player.Human;
 import player.Player;
 
+/**
+ * Classe principale pour l'affichage de l'application
+ *
+ * @author Xiumin LIN, Celine LI
+ */
 public class GameGUI extends Application {
     private Stage mainStage;
     private Scene menuScene;
@@ -100,7 +105,10 @@ public class GameGUI extends Application {
         Puissance4 game = new Puissance4(p1, p2, true);
         Puissance4Pane p4GUI = new Puissance4Pane(game);
         Button backToMenuBtn = new Button("Menu");
-        backToMenuBtn.setOnAction(e -> switchScene(this.menuScene));
+        backToMenuBtn.setOnAction(e -> {
+            p4GUI.stopGame(); // changer la scene n'arrete pas le jeu donc il faut l'arreter mannuellement
+            switchScene(this.menuScene);
+        });
         p4GUI.addBackToMenuInButtonBar(backToMenuBtn);
         this.switchScene(new Scene(p4GUI));
     }

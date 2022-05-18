@@ -5,6 +5,11 @@ import game.Puissance4;
 import ia.Ia;
 import ia.Niveau;
 
+/**
+ * Classe représentant un joueur artificiel, il utilise la classe IA pour faire ses choix
+ *
+ * @author Xiumin LIN
+ */
 public class Computer extends Player {
     private final Niveau level;
     private final Ia ai;
@@ -37,7 +42,7 @@ public class Computer extends Player {
             default:
                 result = ai.playMiniMax(game, 0, true, this);
         }
-        System.out.println("IA joue à la colonne :" + result[0] + " (heuristique:" + result[1] + ")");
+        System.out.println("[IA]" + getName() + " joue à la colonne :" + result[0] + " (heuristique:" + result[1] + ")");
         return result[0];
     }
 }

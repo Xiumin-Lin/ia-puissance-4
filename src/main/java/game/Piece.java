@@ -1,5 +1,10 @@
 package game;
 
+/**
+ * Enumerate the different types of pieces
+ *
+ * @author Xiumin LIN
+ */
 public enum Piece {
     JAUNE(1),
     ROUGE(2),

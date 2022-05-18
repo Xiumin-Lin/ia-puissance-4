@@ -1,15 +1,22 @@
 package game;
 
+import player.Human;
 import player.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Classe répresentant le jeu Puissance 4
+ *
+ * @author Xiumin LIN, Celine Li
+ */
 public class Puissance4 {
     public static final int NB_ROW = 6; // = y
     public static final int NB_COL = 7; // = x
     private static final int WIN_NUMBER = 4;
     private boolean isP1Turn;
+    private final boolean haveHumanPlayer;
     private final Player player1;
     private final Player player2;
 
@@ -44,6 +51,7 @@ public class Puissance4 {
         this.isP1Turn = startWithP1; // est ce que le joueur 1 commence ?
         this.player1 = p1;
         this.player2 = p2;
+        this.haveHumanPlayer = (player1 instanceof Human || player2 instanceof Human);
         this.winner = null;
         plateau = new Piece[NB_COL][NB_ROW]; // [x][y]
         for(int x = 0; x < NB_COL; x++) {
@@ -244,12 +252,20 @@ public class Puissance4 {
         isP1Turn = !isP1Turn;
     }
 
+    public boolean getHaveAHumanPlayer() {
+        return haveHumanPlayer;
+    }
+
     public Player getWinner() {
         return winner;
     }
 
     public Player getCurrentPlayer() {
         return (isP1Turn) ? player1 : player2;
+    }
+
+    public void setGameIsOver() {
+        isGameOver = true;
     }
 
     public boolean isOver() {
@@ -359,7 +375,7 @@ public class Puissance4 {
 
     /**
      * Vérifie si une pièce est isolée des autres pièces de la même couleurs.
-     * 
+     *
      * @param col la colonne de la piece
      * @param row la ligne de la piece
      * @return true si la piece est isolé des autres pièces de la même couleurs

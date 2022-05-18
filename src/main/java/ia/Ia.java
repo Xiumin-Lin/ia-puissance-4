@@ -6,8 +6,13 @@ import player.Player;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Classe représentant un joueur humain
+ *
+ * @author Xiumin LIN, Celine Li
+ */
 public class Ia {
-    private static final Random RAND = new Random();
+    private final Random rand = new Random();
     private int profondeurMax;
 
     public Ia(Niveau lvl) {
@@ -33,7 +38,7 @@ public class Ia {
         // La liste des colonnes valide dont l'ia peut poser une pièce
         List<Integer> colonnesValide = game.getAvailablePlace();
         // On attribut un colonne au hasard au cas où l'algo n'arrive pas à choisir
-        int col = colonnesValide.get(RAND.nextInt(colonnesValide.size()));
+        int col = colonnesValide.get(rand.nextInt(colonnesValide.size()));
         int value = isMax ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         // Pour chaque coup possible
         for(int moveIndex : colonnesValide) {
@@ -89,7 +94,7 @@ public class Ia {
         // La liste des colonnes valide dont l'ia peut poser une pièce
         List<Integer> colonnesValide = game.getAvailablePlace();
         // On attribut un colonne au hasard au cas où l'algo n'arrive pas à choisir
-        int col = colonnesValide.get(RAND.nextInt(colonnesValide.size()));
+        int col = colonnesValide.get(rand.nextInt(colonnesValide.size()));
         int value = isMax ? Integer.MIN_VALUE : Integer.MAX_VALUE;
         // Pour chaque coup possible
         for(int moveIndex : colonnesValide) {

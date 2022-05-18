@@ -2,6 +2,8 @@ package ia;
 
 /**
  * Enumerate the different possible levels of an ia
+ *
+ * @author Xiumin LIN
  */
 public enum Niveau {
     FAIBLE(3),
