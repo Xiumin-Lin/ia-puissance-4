@@ -18,7 +18,7 @@ public class Puissance4 {
      * Piece[x] correspond à la liste des cases sur la colonne x.
      * <p>&emsp
      * colonne (x)            <br/>&ensp
-     * 0 1 2 3 4 5 6            <br/>
+     *    0 1 2 3 4 5 6            <br/>
      * 0  _ _ _ _ _ _ _            <br/>
      * 1  _ _ _ _ _ _ _            <br/>
      * 2  _ _ _ _ _ _ _  ligne (y) <br/>
@@ -257,6 +257,12 @@ public class Puissance4 {
     }
 
     /**
+     * La liste indiquant les valeurs de l'heuristique pour les pièces isolés selon leurs colonnes.
+     * Plus la pièce est au centre de la pièce et plus sa valeur sera forte par rapport aux autres.
+     */
+    private static final int[] soloPieceHeuristic = {40, 70, 120, 200, 120, 70, 40};
+
+    /**
      * Retourne l'evaluation de la valeur de l'heuristique du plateau pour le joueur donnée en paramètre.
      * Le retour > 0 si le joueur à l'avantage, < 0 s'il est en désavantage et 0 si il y a égalité.
      *
@@ -273,11 +279,21 @@ public class Puissance4 {
             return Integer.MIN_VALUE;
         }
 
-        // Vertical (pour chaque colonne)
+        // Calcul de l'heuristique pour les alignements verticals (pour chaque colonne)
         for(int col = 0; col < NB_COL; col++) {
             List<Piece> vertical = new ArrayList<>();
-            for(int row = NB_ROW - 1; row >= 0; row--) {
-                vertical.add(plateau[col][row]);
+            int row = NB_ROW - 1;
+            for(; row >= 0; row--) {
+                Piece aPiece = plateau[col][row];
+                if(aPiece == Piece.EMPTY) break;
+                vertical.add(aPiece);
+
+                // Si c'est une pièce isolée, on lui attribue une valeur selon la liste soloPieceHeuristic.
+                // On attribue une valeur plus forte aux pièces isolées qui sont proches du centre.
+                if(checkIfIsolatePiece(col, row)) {
+                    if(aPiece == Piece.ROUGE) p1Score += soloPieceHeuristic[col];
+                    else p2Score += soloPieceHeuristic[col];
+                }
             }
             p1Score += calculateHeuristicVertical(vertical, true);
             p2Score += calculateHeuristicVertical(vertical, false);
@@ -339,6 +355,30 @@ public class Puissance4 {
 
         int result = p1Score - p2Score;
         return p == player1 ? result : -result;
+    }
+
+    /**
+     * Vérifie si une pièce est isolée des autres pièces de la même couleurs.
+     * 
+     * @param col la colonne de la piece
+     * @param row la ligne de la piece
+     * @return true si la piece est isolé des autres pièces de la même couleurs
+     */
+    private boolean checkIfIsolatePiece(int col, int row) {
+        Piece left = !isOutOfLimitCol(col - 1) ? plateau[col - 1][row] : null;
+        Piece right = !isOutOfLimitCol(col + 1) ? plateau[col + 1][row] : null;
+        Piece bottom = !isOutOfLimitRow(row + 1) ? plateau[col][row + 1] : null;
+        Piece diagTopLeft = !isOutOfLimitBoard(col - 1, row - 1) ? plateau[col - 1][row - 1] : null;
+        Piece diagBotLeft = !isOutOfLimitBoard(col - 1, row + 1) ? plateau[col - 1][row + 1] : null;
+        Piece diagTopRight = !isOutOfLimitBoard(col + 1, row - 1) ? plateau[col + 1][row - 1] : null;
+        Piece diagBotRight = !isOutOfLimitBoard(col + 1, row + 1) ? plateau[col + 1][row + 1] : null;
+        Piece[] neighbours = {left, right, bottom, diagTopLeft, diagBotLeft, diagTopRight, diagBotRight};
+
+        for(Piece voisin : neighbours) {
+            if(voisin == null || voisin == Piece.EMPTY) continue;
+            return false;
+        }
+        return true;
     }
 
     /**

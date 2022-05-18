@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * Classe permettant de créer la fênetre du jeu Puissance 4.
- * Une grande partie du code provient du tutoriel fait par Almas Baimagambetov avec quelques modifications.
+ * Inspiré du tutoriel fait par Almas Baimagambetov avec des modifications.
  * (source) https://github.com/AlmasB/FXTutorials/blob/master/src/main/java/com/almasb/connect4/Connect4App.java
  *
  * @author Xiumin LIN, Celine LI, Almas Baimagambetov
