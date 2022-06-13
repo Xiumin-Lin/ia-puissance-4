@@ -381,6 +381,7 @@ public class Puissance4 {
      * @return true si la piece est isolé des autres pièces de la même couleurs
      */
     private boolean checkIfIsolatePiece(int col, int row) {
+        Piece top = !isOutOfLimitCol(row - 1) ? plateau[col][row - 1] : null;
         Piece left = !isOutOfLimitCol(col - 1) ? plateau[col - 1][row] : null;
         Piece right = !isOutOfLimitCol(col + 1) ? plateau[col + 1][row] : null;
         Piece bottom = !isOutOfLimitRow(row + 1) ? plateau[col][row + 1] : null;
@@ -388,7 +389,7 @@ public class Puissance4 {
         Piece diagBotLeft = !isOutOfLimitBoard(col - 1, row + 1) ? plateau[col - 1][row + 1] : null;
         Piece diagTopRight = !isOutOfLimitBoard(col + 1, row - 1) ? plateau[col + 1][row - 1] : null;
         Piece diagBotRight = !isOutOfLimitBoard(col + 1, row + 1) ? plateau[col + 1][row + 1] : null;
-        Piece[] neighbours = {left, right, bottom, diagTopLeft, diagBotLeft, diagTopRight, diagBotRight};
+        Piece[] neighbours = {top, left, right, bottom, diagTopLeft, diagBotLeft, diagTopRight, diagBotRight};
 
         for(Piece voisin : neighbours) {
             if(voisin == null || voisin == Piece.EMPTY) continue;
